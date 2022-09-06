@@ -1,0 +1,1 @@
+Folder for files that connect with the api. It helps to configure api service and use Design Pattern called singleton to prevent duplicate instances of the same service. It makes sure data stays always the same and users are not getting data from different sources.
