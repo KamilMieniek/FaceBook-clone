@@ -1,0 +1,10 @@
+.LoginContainer {
+  background-color: #42414d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 350px;
+  border-radius: 30px;
+  margin-right: 100px;
+}

@@ -1,0 +1,26 @@
+.RegisterForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  padding-bottom: 1rem;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 5px;
+  flex-grow: 1;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 1rem;
+}
+input[type='text'],
+input[type='password'],
+button,
+textarea {
+  font-family: 'Nunito', sans-serif;
+  font-size: 22px;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
