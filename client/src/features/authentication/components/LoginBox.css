@@ -1,10 +1,35 @@
 .LoginContainer {
-  background-color: #42414d;
+  background-color: #cfcfd4;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
-  height: 350px;
+
   border-radius: 30px;
   margin-right: 100px;
+}
+form {
+  padding: 0px 40px;
+  border-radius: 10px;
+}
+
+h1 {
+  padding-top: 30px;
+  color: rgb(101, 146, 230);
+  font-weight: bolder;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  border: none;
+  background-color: rgb(101, 146, 230);
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-bottom: 30px;
 }
