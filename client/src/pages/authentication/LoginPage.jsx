@@ -1,6 +1,7 @@
 import './LoginPage.css';
-import LoginBox from '../../features/authentication/components/LoginBox';
-const LoginPage = () => {
+import RegisterForm from '../../features/authentication/components/RegisterForm';
+import LoginForm from '../../features/authentication/components/LoginForm';
+const LoginPage = ({ path }) => {
   return (
     <div className="LoginPageContainer">
       <div className="LoginPageCopy">
@@ -9,7 +10,7 @@ const LoginPage = () => {
           CloneBook helps me learn MERN development.{' '}
         </h2>
       </div>
-      <LoginBox></LoginBox>
+      {path === 'register' ? <RegisterForm /> : <LoginForm />}
     </div>
   );
 };
