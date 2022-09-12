@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import app from './app.js';
-
+import { mongoConnect, mongoDisconnect } from './Db/mongo.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 8000;
@@ -19,7 +19,7 @@ const server = https.createServer(
   app
 );
 function startServer() {
-  //mongoConnect();
+  mongoConnect();
   server.listen(PORT, () => {
     console.log(`listening on port ${PORT}...`);
   });

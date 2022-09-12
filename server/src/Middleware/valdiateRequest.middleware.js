@@ -2,8 +2,6 @@
 // Imports
 // ========================================================
 
-import error from '../utils/error.js';
-
 // ========================================================
 // Middleware
 // ========================================================
@@ -36,8 +34,4 @@ const validateRequest = (joiSchema, reqProperty) => {
 // ========================================================
 
 // Export the middleware
-export default {
-  validateRequestBody,
-  validateRequestParams,
-  validateRequestQuery,
-};
+export { validateRequestBody, validateRequestParams, validateRequestQuery };

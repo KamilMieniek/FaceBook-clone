@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const userSchema = Schema({
@@ -13,7 +13,7 @@ const userSchema = Schema({
     require: true,
   },
   password: {
-    type: password,
+    type: String,
     require: true,
   },
   birthday: {
