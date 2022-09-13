@@ -4,8 +4,7 @@
 
 import User from '../Users/users.mongo.js';
 import bcrypt from 'bcryptjs';
-import AppError from '../../utils/AppError.js';
-import { commonErrors } from '../../utils/errorTypes.js';
+import { AppError, commonErrors } from '../../utils/AppError.js';
 import { asyncRouteHandler } from '../../Middleware/asyncRouteHandler.middleware.js';
 import jwt from 'jsonwebtoken';
 
@@ -19,13 +18,7 @@ const register = asyncRouteHandler(async (req, res, next) => {
   //email has to be unique, so return operational error with message to user
   const registeredEmail = await User.findOne({ email: req.body.email });
   if (registeredEmail) {
-    next(
-      new AppError(
-        commonErrors.emailIsUsed,
-        'An account is already using this email, use another mail or just log in.',
-        true
-      )
-    );
+    next(new AppError(commonErrors.emailIsUsed));
   }
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
@@ -52,6 +45,7 @@ const login = asyncRouteHandler(async (req, res, next) => {
     req.body.password,
     user.password
   );
+  //if password is not correct. push AppError further to errorHandlerMiddleware
   if (!isPasswordCorrect)
     return next(new AppError(commonErrors.wrongPasswordError));
 
@@ -60,8 +54,16 @@ const login = asyncRouteHandler(async (req, res, next) => {
     process.env.JWT
   );
   //TODO: i should change it after extending user model to store posts, messages , chat rooms?
-  const { password, __v, updatedAt, createdAt, isAdmin, ...otherDetails } =
-    user._doc;
+  const {
+    password,
+    __v,
+    updatedAt,
+    createdAt,
+    birthday,
+    isAdmin,
+    lastActiveAt,
+    ...otherDetails
+  } = user._doc;
   res
     .cookie('access_token', token, {
       httpOnly: true,

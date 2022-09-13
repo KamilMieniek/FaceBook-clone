@@ -9,19 +9,23 @@ db.once('open', () => {
 });
 
 db.on('error', (err) => {
-  console.log(err);
+  console.error(err);
+  console.log(
+    '%s MongoDB connection error. Please make sure MongoDB is running.'
+  );
+  process.exit();
 });
 
-export async function mongoConnect() {
+async function mongoConnect() {
   await mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
 }
-
+async function mongoDisconnect() {
+  await mongoose.disconnect();
+}
 // ========================================================
 // Exports
 // ========================================================
-export async function mongoDisconnect() {
-  await mongoose.disconnect();
-}
+export { mongoConnect, mongoDisconnect };
