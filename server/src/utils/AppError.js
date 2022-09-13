@@ -1,11 +1,12 @@
 class AppError {
-  constructor(commonType, description, isOperational) {
+  constructor(errorType, description) {
     Error.call(this);
     Error.captureStackTrace(this);
-    this.commonType = commonType;
-    this.description = description;
-    this.isOperational = isOperational;
+    this.errorType = errorType;
   }
 }
 
+// ========================================================
+// Exports
+// ========================================================
 export default AppError;

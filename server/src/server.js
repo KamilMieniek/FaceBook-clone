@@ -1,16 +1,25 @@
+// ========================================================
+// Imports
+// ========================================================
 import dotenv from 'dotenv';
 dotenv.config();
 import https from 'https';
-import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import app from './app.js';
-import { mongoConnect, mongoDisconnect } from './Db/mongo.js';
+import app from './startup/app.js';
+import { mongoConnect, mongoDisconnect } from './startup/mongo.js';
+
+// ========================================================
+// Config
+// ========================================================
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 8000;
 
+// ========================================================
+// Server
+// ========================================================
 const server = https.createServer(
   {
     key: fs.readFileSync(path.join(__dirname, '..', 'key.pem')),

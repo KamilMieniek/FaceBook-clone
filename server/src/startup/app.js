@@ -6,8 +6,9 @@ import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
-import { mongoConnect, mongoDisconnect } from './Db/mongo.js';
-import authRouter from './Auth/auth.router.js';
+import { mongoConnect, mongoDisconnect } from './mongo.js';
+import errorHandler from '../Middleware/handleError.middleware.js';
+import authRouter from '../modules/Auth/auth.router.js';
 // ========================================================
 // Setup
 // ========================================================
@@ -35,8 +36,6 @@ app.get('/*', (req, res) => {
 });
 
 // this will be used only when endpoint function call next(err)
-app.use((err, req, res, next) => {
-  res.send('error occurred');
-});
+app.use(errorHandler);
 
 export default app;

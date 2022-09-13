@@ -16,4 +16,8 @@ router.delete('/:id', verifyToken, verifyUser, deleteUser);
 router.get('/:id', verifyToken, verifyUser, getUser);
 //GET ALL
 router.get('/', verifyToken, verifyAdmin, getUsers);
+
+// ========================================================
+// Exports
+// ========================================================
 export default router;

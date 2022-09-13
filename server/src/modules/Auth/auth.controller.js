@@ -4,18 +4,20 @@
 
 import User from '../Users/users.mongo.js';
 import bcrypt from 'bcryptjs';
-import AppError from '../utils/AppError.js';
-import { commonErrors } from '../utils/errorTypes.js';
-import { asyncRouteHandler } from '../Middleware/asyncRouteHandler.middleware.js';
-//import jwt from 'jsonwebtoken';
+import AppError from '../../utils/AppError.js';
+import { commonErrors } from '../../utils/errorTypes.js';
+import { asyncRouteHandler } from '../../Middleware/asyncRouteHandler.middleware.js';
+import jwt from 'jsonwebtoken';
 
 // ========================================================
 // Controllers
 // ========================================================
+
+//REGISTER
 const register = asyncRouteHandler(async (req, res, next) => {
   //check if there is an User with this email,
   //email has to be unique, so return operational error with message to user
-  const registeredEmail = await User.findOne({ email: userEmail });
+  const registeredEmail = await User.findOne({ email: req.body.email });
   if (registeredEmail) {
     next(
       new AppError(
@@ -25,13 +27,13 @@ const register = asyncRouteHandler(async (req, res, next) => {
       )
     );
   }
-
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
   const hash = bcrypt.hashSync(req.body.password, salt);
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
+    birthday: req.body.birthday,
     password: hash,
   });
 
@@ -40,21 +42,18 @@ const register = asyncRouteHandler(async (req, res, next) => {
     message: 'User successfully registered.',
   });
 });
+
+// LOGIN
 const login = asyncRouteHandler(async (req, res, next) => {
-  const user = await User.findOne({ username: req.body.email });
-  if (!user)
-    return next(
-      new AppError(commonErrors.invalidEmailInputError, 'Wrong email!', true)
-    );
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) return next(new AppError(commonErrors.emailIsUsed));
 
   const isPasswordCorrect = await bcrypt.compare(
     req.body.password,
     user.password
   );
   if (!isPasswordCorrect)
-    return next(
-      new AppError(commonErrors.wrongPasswordError, 'Wrong password!', true)
-    );
+    return next(new AppError(commonErrors.wrongPasswordError));
 
   const token = jwt.sign(
     { id: user._id, isAdmin: user.isAdmin },
@@ -70,7 +69,6 @@ const login = asyncRouteHandler(async (req, res, next) => {
     .status(200)
     .json({ ...otherDetails });
 });
-
 // ========================================================
 // Exports
 // ========================================================

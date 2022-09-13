@@ -21,7 +21,9 @@ const validateRequestQuery = (joiSchema) => {
 const validateRequest = (joiSchema, reqProperty) => {
   return async (req, res, next) => {
     try {
-      const { error } = await joiSchema.validateAsync(req[reqProperty]);
+      //TODO: move data parsing to client from string to date type - timestamps
+      req.body.birthday = new Date(req.body.birthday);
+      await joiSchema.validateAsync(req[reqProperty]);
       next();
     } catch (error) {
       return next(error);
