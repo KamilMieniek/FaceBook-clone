@@ -2,6 +2,9 @@ import React from 'react';
 import './Authentication.css';
 import { useState } from 'react';
 import FormInput from './FormInput';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+const baseURL = 'https://localhost:8000/auth/login';
 const LoginForm = () => {
   const loginInputs = [
     {
@@ -25,6 +28,7 @@ const LoginForm = () => {
       required: true,
     },
   ];
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -33,8 +37,12 @@ const LoginForm = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const res = await axios.post(baseURL, values);
+      navigate('/');
+    } catch (error) {}
   };
   return (
     <div className="LoginContainer">
@@ -48,8 +56,15 @@ const LoginForm = () => {
             onChange={onChange}
           />
         ))}
-        <button>Submit</button>
+        <button>Log In</button>
       </form>
+      <Link to="#" className="textLink">
+        Forgotten password?
+      </Link>
+      <hr />
+      <Link to="/register" className="link-styles">
+        <div className="registerButton">Create new account</div>
+      </Link>
     </div>
   );
 };

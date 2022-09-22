@@ -21,16 +21,7 @@ export default function App() {
 
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/login ">Register</Link>
-          </li>
-        </ul>
-      </nav>
+      <nav></nav>
 
       {element}
     </>

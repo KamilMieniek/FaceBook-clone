@@ -2,7 +2,8 @@ import './Authentication.css';
 import React from 'react';
 import FormInput from './FormInput';
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 const LoginBox = () => {
   const [values, setValues] = useState({
     username: '',
@@ -86,6 +87,10 @@ const LoginBox = () => {
         ))}
         <button>Submit</button>
       </form>
+      <hr></hr>
+      <Link to="/Login" className="textLink">
+        Already have an Account?
+      </Link>
     </div>
   );
 };

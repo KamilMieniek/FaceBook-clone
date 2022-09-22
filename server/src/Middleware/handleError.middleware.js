@@ -7,6 +7,7 @@ const handleErrorMiddleware = (err, req, res, next) => {
     }
   } else {
     res.status(500).json({ description: 'Something went wrong' });
+    console.error(err);
   }
 };
 
