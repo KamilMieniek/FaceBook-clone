@@ -13,6 +13,7 @@ form {
 
 h1 {
   padding-top: 30px;
+  font-size: 50px;
   color: rgb(101, 146, 230);
   font-weight: bolder;
   text-align: center;
@@ -40,7 +41,7 @@ button {
 
 .registerButton {
   height: 50px;
-  width: 78%;
+  width: 58%;
   margin-top: 25px;
   margin-bottom: 20px;
   border: none;

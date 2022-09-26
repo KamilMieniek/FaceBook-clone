@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Authentication.css';
 import { useState } from 'react';
 import FormInput from './FormInput';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../../../context/AuthenticationContext';
 const baseURL = 'https://localhost:8000/auth/login';
 const LoginForm = () => {
   const loginInputs = [
@@ -28,6 +29,7 @@ const LoginForm = () => {
       required: true,
     },
   ];
+  const { loading, error, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [values, setValues] = useState({
     email: '',
@@ -39,10 +41,23 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch({ type: 'LOGIN_START' });
+
     try {
-      const res = await axios.post(baseURL, values);
-      navigate('/');
-    } catch (error) {}
+      const res = await axios.post('https://localhost:8000/auth/login', values);
+
+      if (res.data._id) {
+        dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
+        navigate('/');
+      } else {
+        dispatch({
+          type: 'LOGIN_FAILURE',
+          payload: { message: 'Something went wrong!' },
+        });
+      }
+    } catch (err) {
+      dispatch({ type: 'LOGIN_FAILURE', payload: err });
+    }
   };
   return (
     <div className="LoginContainer">

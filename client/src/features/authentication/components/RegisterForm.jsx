@@ -1,9 +1,10 @@
 import './Authentication.css';
-import React from 'react';
+import React, { useContext } from 'react';
 import FormInput from './FormInput';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../../../context/AuthenticationContext';
 const LoginBox = () => {
   const [values, setValues] = useState({
     username: '',
@@ -12,7 +13,7 @@ const LoginBox = () => {
     password: '',
     confirmPassword: '',
   });
-
+  const { loading, error, dispatch } = useContext(AuthContext);
   const registerInputs = [
     {
       id: 1,
@@ -63,14 +64,30 @@ const LoginBox = () => {
       required: true,
     },
   ];
-
+  const navigate = useNavigate();
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
+    dispatch({ type: 'LOGIN_START' });
+
+    try {
+      const res = await axios.post('/auth/register', values);
+
+      if (res.data._id) {
+        dispatch({ type: 'LOGIN_SUCCESS', payload: res.data.details });
+        navigate('/');
+      } else {
+        dispatch({
+          type: 'LOGIN_FAILURE',
+          payload: { message: 'Something went wrong!' },
+        });
+      }
+    } catch (err) {
+      dispatch({ type: 'LOGIN_FAILURE', payload: err.response.data });
+    }
   };
 
   return (

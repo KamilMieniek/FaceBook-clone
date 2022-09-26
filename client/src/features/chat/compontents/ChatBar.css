@@ -1,0 +1,12 @@
+.ChatBar {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  background-color: #242526;
+}
