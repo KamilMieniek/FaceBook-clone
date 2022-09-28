@@ -11,6 +11,14 @@ const userSchema = Schema({
     unique: true,
     require: true,
   },
+  roles: {
+    User: {
+      type: Number,
+      default: 0001,
+    },
+    Admin: Number,
+  },
+  refreshToken: [String],
   password: {
     type: String,
     require: true,

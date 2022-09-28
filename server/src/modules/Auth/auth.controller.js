@@ -39,21 +39,29 @@ const register = asyncRouteHandler(async (req, res, next) => {
 // LOGIN
 const login = asyncRouteHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
-  if (!user) return next(new AppError(commonErrors.emailIsUsed));
+  if (!user) return next(new AppError(commonErrors.invalidEmailInputError));
 
-  const isPasswordCorrect = await bcrypt.compare(
-    req.body.password,
-    user.password
-  );
-  //if password is not correct. push AppError further to errorHandlerMiddleware
-  if (!isPasswordCorrect)
-    return next(new AppError(commonErrors.wrongPasswordError));
+  const match = await bcrypt.compare(req.body.password, user.password);
+  //if password is not correct. push operational AppError further to errorHandlerMiddleware
+  if (!match) return next(new AppError(commonErrors.wrongPasswordError));
 
-  const token = jwt.sign(
-    { id: user._id, isAdmin: user.isAdmin },
-    process.env.JWT
+  const roles = Object.values(user.roles);
+  const accessToken = jwt.sign(
+    { userInfo: { _id: user._id, username: user.username, roles: roles } },
+    process.env.JWT,
+    {
+      expiresIn: '60s',
+    }
   );
-  //TODO: i should change it after extending user model to store posts, messages , chat rooms?
+  const refreshToken = jwt.sign(
+    { userInfo: { _id: user._id } },
+    process.env.JWT,
+    {
+      expiresIn: '1d',
+    }
+  );
+
+  //TODO:  should I change it after extending user model to store posts, messages , chat rooms?
   const {
     password,
     __v,

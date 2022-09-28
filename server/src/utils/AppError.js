@@ -1,6 +1,6 @@
 class AppError {
   //Here you can pass an object from commonErrors object or if needed write ur own
-  // as {name:"", status:Number, isOperational:Boolean, description:""}
+  // as {name:"", status:Number, isOperational:Boolean, description:""} all required
   constructor(obj) {
     Error.call(this);
     Error.captureStackTrace(this);
@@ -24,13 +24,25 @@ const commonErrors = {
     name: 'invalidEmailInputError',
     status: 400,
     isOperational: true,
-    description: 'Invalid email',
+    description: 'There is no account connected to this e-mail.',
   },
   wrongPasswordError: {
     name: 'wrongPasswordError',
     status: 400,
     isOperational: true,
     description: 'Wrong password!',
+  },
+  unauthorized: {
+    name: 'Unauthorized',
+    status: 401,
+    isOperational: true,
+    description: "No permission's",
+  },
+  invalidRefreshToken: {
+    name: 'noRefreshToken',
+    status: 403,
+    isOperational: true,
+    description: " You don't have a valid refresh Token",
   },
   emailIsUsed: {
     name: 'emailIsUsed',
