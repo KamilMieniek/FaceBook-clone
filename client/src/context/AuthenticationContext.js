@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 const INITIAL_STATE = {
   user: JSON.parse(localStorage.getItem('user')) || null,
@@ -8,51 +8,40 @@ const INITIAL_STATE = {
 
 export const AuthContext = createContext(INITIAL_STATE);
 
-const AuthReducer = (state, action) => {
-  switch (action.type) {
-    case 'LOGIN_START':
-      return {
-        user: null,
-        loading: true,
-        error: null,
-      };
-    case 'LOGIN_SUCCESS':
-      return {
-        user: action.payload,
-        loading: false,
-        error: null,
-      };
-    case 'LOGIN_FAILURE':
-      return {
-        user: null,
-        loading: false,
-        error: action.payload,
-      };
-    case 'LOGOUT':
-      return {
-        user: null,
-        loading: false,
-        error: null,
-      };
-    default:
-      return state;
-  }
-};
-
 export const AuthContextProvider = ({ children }) => {
-  const [authState, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
+  const [user, setUser] = useState(INITIAL_STATE.user);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(authState.user));
-  }, [authState.user]);
+  const authLoading = () => {
+    setLoading(true);
+  };
+  const authSuccessful = (data) => {
+    console.log(data);
+    setLoading(false);
+    console.log(data);
+    setUser(data);
+  };
+  const authFailure = (error) => {
+    console.log(error);
+    setLoading(false);
+    setUser(null);
+    setError(error);
+  };
+  // useEffect(() => {
+  //   localStorage.setItem('user', JSON.stringify(user));
+  //   setUser()
+  // }, [user]);
 
   return (
     <AuthContext.Provider
       value={{
-        user: authState.user,
-        loading: authState.loading,
-        error: authState.error,
-        dispatch,
+        user,
+        loading,
+        error,
+        authLoading,
+        authFailure,
+        authSuccessful,
       }}
     >
       {children}

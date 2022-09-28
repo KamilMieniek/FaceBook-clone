@@ -29,7 +29,8 @@ const LoginForm = () => {
       required: true,
     },
   ];
-  const { loading, error, dispatch } = useContext(AuthContext);
+  const { user, loading, error, authLoading, authFailure, authSuccessful } =
+    useContext(AuthContext);
   const navigate = useNavigate();
   const [values, setValues] = useState({
     email: '',
@@ -41,28 +42,22 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({ type: 'LOGIN_START' });
-
+    authLoading();
     try {
       const res = await axios.post('https://localhost:8000/auth/login', values);
-
-      if (res.data._id) {
-        dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
-        navigate('/');
-      } else {
-        dispatch({
-          type: 'LOGIN_FAILURE',
-          payload: { message: 'Something went wrong!' },
-        });
-      }
+      console.log(res);
+      authSuccessful(res.data);
+      navigate('/');
     } catch (err) {
-      dispatch({ type: 'LOGIN_FAILURE', payload: err });
+      // dispatch({ type: 'LOGIN_FAILURE', payload: err });
+      authFailure(err);
     }
   };
   return (
     <div className="LoginContainer">
       <form onSubmit={handleSubmit}>
         <h1>Login</h1>
+
         {loginInputs.map((input) => (
           <FormInput
             key={input.id}
@@ -72,6 +67,11 @@ const LoginForm = () => {
           />
         ))}
         <button>Log In</button>
+        {error && (
+          <div className="lErrorMessage">
+            {error?.response?.data?.description}
+          </div>
+        )}
       </form>
       <Link to="#" className="textLink">
         Forgotten password?

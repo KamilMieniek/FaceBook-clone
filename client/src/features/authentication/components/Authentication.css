@@ -38,6 +38,14 @@ button {
   margin-top: 15px;
   margin-bottom: 25px;
 }
+.lErrorMessage {
+  color: red;
+  text-align: center;
+  font-size: 16px;
+  padding: 3px;
+  margin-bottom: 8px;
+  line-height: 12px;
+}
 
 .registerButton {
   height: 50px;
