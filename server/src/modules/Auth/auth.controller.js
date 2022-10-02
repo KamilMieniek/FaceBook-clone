@@ -22,18 +22,27 @@ const register = asyncRouteHandler(async (req, res, next) => {
   }
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
-  const hash = bcrypt.hashSync(req.body.password, salt);
+  const hashedPwd = bcrypt.hashSync(req.body.password, salt);
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
     birthday: req.body.birthday,
-    password: hash,
+    roles: { User: '2001' },
+    password: hashedPwd,
   });
-
   await newUser.save();
-  res.status(201).json({
-    message: 'User successfully registered.',
-  });
+  const { accessToken, refreshToken } = newTokens(newUser);
+  res
+    .cookie('jwt', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    })
+    .status(201)
+    .json({
+      accessToken,
+      message: 'User successfully registered.',
+    });
 });
 
 // LOGIN
@@ -45,6 +54,19 @@ const login = asyncRouteHandler(async (req, res, next) => {
   //if password is not correct. push operational AppError further to errorHandlerMiddleware
   if (!match) return next(new AppError(commonErrors.wrongPasswordError));
 
+  const { accessToken, refreshToken } = newTokens(user);
+  res
+    .cookie('jwt', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    })
+    .status(200)
+    .json({ accessToken });
+});
+
+//Generate new Access and refresh tokens for login and register operations
+const newTokens = (user) => {
   const roles = Object.values(user.roles);
   const accessToken = jwt.sign(
     { userInfo: { _id: user._id, username: user.username, roles: roles } },
@@ -60,25 +82,8 @@ const login = asyncRouteHandler(async (req, res, next) => {
       expiresIn: '1d',
     }
   );
-
-  //TODO:  should I change it after extending user model to store posts, messages , chat rooms?
-  const {
-    password,
-    __v,
-    updatedAt,
-    createdAt,
-    birthday,
-    isAdmin,
-    lastActiveAt,
-    ...otherDetails
-  } = user._doc;
-  res
-    .cookie('access_token', token, {
-      httpOnly: true,
-    })
-    .status(200)
-    .json({ ...otherDetails });
-});
+  return { accessToken, refreshToken };
+};
 // ========================================================
 // Exports
 // ========================================================

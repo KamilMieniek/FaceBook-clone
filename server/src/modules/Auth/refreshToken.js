@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { AppError, commonErrors } from '../../utils/AppError.js';
 
 // User have to use this endpoint to validate his refreshToken and get his new accessToken
-const handleRefreshToken = (req, res) => {
+const getNewAccessToken = (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.jwt) return next(new AppError(commonErrors.unauthorized));
   const refreshToken = cookies.jwt;
@@ -28,4 +28,4 @@ const handleRefreshToken = (req, res) => {
   });
 };
 
-module.exports = { handleRefreshToken };
+module.exports = { getNewAccessToken };

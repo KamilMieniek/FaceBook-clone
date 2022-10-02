@@ -9,13 +9,13 @@ import express from 'express';
 // ========================================================
 const router = express.Router();
 //UPDATE
-router.put('/:id', verifyToken, verifyUser, updateUser);
+router.put('/:id', updateUser);
 //DELETE
-router.delete('/:id', verifyToken, verifyUser, deleteUser);
+router.delete('/:id', deleteUser);
 //GET
-router.get('/:id', verifyToken, verifyUser, getUser);
+router.get('/:id', getUser);
 //GET ALL
-router.get('/', verifyToken, verifyAdmin, getUsers);
+router.get('/', getUsers);
 
 // ========================================================
 // Exports
