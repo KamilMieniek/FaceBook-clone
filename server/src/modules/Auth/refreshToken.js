@@ -70,8 +70,9 @@ const newTokens = (user) => {
   const roles = Object.values(user.roles).filter((element) => {
     return element !== undefined && element !== null;
   });
+
   const accessToken = jwt.sign(
-    { userInfo: { username: user.username, roles: roles } },
+    { user: { id: user.id, roles: roles } },
     process.env.JWT_ACCESS,
     {
       expiresIn: accessTokenDuration,

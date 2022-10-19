@@ -10,9 +10,10 @@ import { AppError, commonErrors } from '../utils/AppError.js';
 //Check if user has a role that was specified in param
 const verifyRoles = (...allowedRoles) => {
   return (req, res, next) => {
-    if (!req?.roles) return next(new AppError(commonErrors.unauthorized));
+    if (!req?.user?.roles) return next(new AppError(commonErrors.unauthorized));
     const rolesArray = [...allowedRoles];
-    const result = req.roles
+
+    const result = req.user.roles
       .map((role) => {
         return rolesArray.includes(role);
       })

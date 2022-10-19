@@ -11,7 +11,6 @@ import errorHandler from '../Middleware/handleError.middleware.js';
 import authRouter from '../modules/Auth/auth.router.js';
 import cookieParser from 'cookie-parser';
 import userRouter from '../modules/Users/users.router.js';
-4;
 import verifyAccessToken from '../Middleware/verifyToken.middleware.js';
 // ========================================================
 // Setup
@@ -43,7 +42,7 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 // ========================================================
 
 app.use('/auth/', authRouter);
-//verifyAccessTokens check if user has access token and sets req.user req.roles values
+//verifyAccessTokens check if user has access token and sets req.userId req.roles values
 app.use('/api/users/', verifyAccessToken, userRouter);
 
 app.get('', (req, res) => {

@@ -22,8 +22,9 @@ const verifyAccessToken = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_ACCESS, (err, decoded) => {
     if (err) return res.sendStatus(403); //invalid token
-    req.user_id = decoded.userInfo.username;
-    req.roles = decoded.userInfo.roles;
+    //user has property id and roles[]
+    console.log(decoded.user);
+    req.user = decoded.user;
     next();
   });
 };

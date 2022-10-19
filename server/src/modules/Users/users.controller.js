@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import { asyncRouteHandler } from '../../Middleware/asyncRouteHandler.middleware.js';
 import { AppError, commonErrors } from '../../utils/AppError.js';
 import User from './users.mongo.js';
-
+import ROLES_LIST from '../../config/roles.config.js';
 // ========================================================
 // Controllers
 // ========================================================
@@ -40,16 +40,42 @@ const updateUser = asyncRouteHandler((req, res, next) => {
 });
 
 //DELETE
-const deleteUser = asyncRouteHandler((req, res, next) => {
+const deleteUser = asyncRouteHandler(async (req, res, next) => {
+  //res user is assigned from accesstoken middleware
+  //it has property id and roles
   const user = req.user;
   if (!user) {
     return next(new AppError(commonErrors.unauthorized));
   }
-  const userId = User.findOne({ username: user.username });
-  if (req.user)
-    // const user = User.findOne();
-    console.log(params);
+  const id = req.params.id;
+  const ObjectId = mongoose.Types.ObjectId;
+  if (!ObjectId.isValid(id))
+    return next(new AppError(commonErrors.badIdFormat));
+  //this function is mentioned for user to delete only his own account or for admin to delete any account
+  //check if id from params match id of user
+  if (user.id === id || isAdmin(user)) {
+    await User.deleteOne({ _id: id });
+    return res.status(200).json({ status: 'ok' });
+  } else {
+    return next(new AppError(commonErrors.unauthorized));
+  }
 });
+
+//check if user has admin role
+//return boolean
+function isAdmin(user) {
+  const userRoles = user.roles;
+  console.log(ROLES_LIST.Admin);
+  const result = userRoles
+    .map((role) => {
+      return role === ROLES_LIST.Admin;
+    })
+    .find((value) => {
+      return value === true;
+    });
+
+  return result;
+}
 
 // ========================================================
 // Exports
