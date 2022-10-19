@@ -9,7 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import app from './startup/app.js';
 import { mongoConnect, mongoDisconnect } from './startup/mongo.js';
-
+import process from 'node:process';
 // ========================================================
 // Config
 // ========================================================
@@ -29,6 +29,7 @@ const server = https.createServer(
 );
 function startServer() {
   mongoConnect();
+  console.log(`Server is starting in ${process.env.NODE_ENV} mode!`);
   server.listen(PORT, () => {
     console.log(`listening on port ${PORT}...`);
   });

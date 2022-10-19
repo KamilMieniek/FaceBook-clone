@@ -1,0 +1,10 @@
+.friends-container {
+  justify-self: flex-end;
+  background-color: transparent;
+  margin: 10px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  /* padding-left: 15px; */
+  height: 100%;
+}

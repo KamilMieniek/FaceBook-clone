@@ -10,9 +10,7 @@ db.once('open', () => {
 
 db.on('error', (err) => {
   console.error(err);
-  console.log(
-    '%s MongoDB connection error. Please make sure MongoDB is running.'
-  );
+  console.log('MongoDB connection error. Please make sure MongoDB is running.');
   process.exit();
 });
 

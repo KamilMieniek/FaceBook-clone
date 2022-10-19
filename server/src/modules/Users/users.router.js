@@ -3,21 +3,29 @@
 // ========================================================
 
 import express from 'express';
+import {
+  deleteUser,
+  getUser,
+  getUsers,
+  updateUser,
+} from './users.controller.js';
+import verifyRoles from '../../Middleware/verifyRoles.middleware.js';
+import ROLES_LIST from '../../config/roles.config.js';
 
 // ========================================================
 // Routes
 // ========================================================
-const router = express.Router();
+const userRouter = express.Router();
 //UPDATE
-router.put('/:id', updateUser);
+userRouter.put('/:id', verifyRoles(ROLES_LIST.User), updateUser);
 //DELETE
-router.delete('/:id', deleteUser);
+userRouter.delete('/:id', verifyRoles(ROLES_LIST.User), deleteUser);
 //GET
-router.get('/:id', getUser);
+userRouter.get('/:id', verifyRoles(ROLES_LIST.User), getUser);
 //GET ALL
-router.get('/', getUsers);
+userRouter.get('/', verifyRoles(ROLES_LIST.Admin), getUsers);
 
 // ========================================================
 // Exports
 // ========================================================
-export default router;
+export default userRouter;

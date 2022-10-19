@@ -1,0 +1,29 @@
+.friend {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  align-items: center;
+  border-radius: 10px;
+}
+.friend:hover {
+  cursor: pointer;
+  background-color: rgba(99, 97, 97, 0.274);
+}
+.friend .friend-avatar {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.friend-room p {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+}
+.friend img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 50px;
+  cursor: pointer;
+}

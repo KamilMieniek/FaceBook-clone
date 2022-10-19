@@ -5,14 +5,17 @@
   "main": "./src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "dev": "cross-env NODE_ENV=development nodemon ./src/server.js",
+    "prod": "cross-env NODE_ENV=production node ./src/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "config": "^3.3.8",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "helmet": "^6.0.0",
@@ -24,6 +27,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.19",
     "npm": "^8.19.1",
+    "process": "^0.11.10",
     "socket.io": "^4.5.2",
     "winston": "^3.8.2",
     "winston-logsene": "^2.1.1"

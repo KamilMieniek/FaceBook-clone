@@ -5,6 +5,7 @@ const userSchema = Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
   },
   email: {
     type: String,
@@ -14,11 +15,11 @@ const userSchema = Schema({
   roles: {
     User: {
       type: String,
-      default: '0001',
+      default: '3452',
     },
     Admin: String,
   },
-  refreshToken: [String],
+  refreshToken: { type: [String], default: [] },
   password: {
     type: String,
     require: true,

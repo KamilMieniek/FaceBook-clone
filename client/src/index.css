@@ -1,1 +1,18 @@
-
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: var(--dark-background);
+  width: 100vw;
+  height: 100vh;
+}
+:root {
+  --dark-background: #18191a;
+  --lighter-background: #242526;
+  --grey-component-background: #3a3b3c;
+  --light-font-color: #d4d6db
+  --font-roboto: 'Roboto Mono', monospace;
+}

@@ -1,0 +1,16 @@
+.friends-label {
+  color: var(--light-font-color);
+  font-size: 30px;
+  font-style: var(--font-roboto);
+}
+.IconPanel {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Roboto Mono', monospace;
+  padding-bottom: 5px;
+}
+.icons-friend-panel {
+  display: flex;
+  gap: 10px;
+  padding-right: 20px;
+}

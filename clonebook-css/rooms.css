@@ -1,0 +1,76 @@
+.content {
+  display: grid;
+  grid-template-columns: 1fr min(50vw, 648px) 1fr;
+  width: 100vw;
+  height: 100vh;
+  gap: 20px;
+}
+
+.rooms-container {
+  justify-self: flex-end;
+  background-color: transparent;
+  margin: 10px;
+  width: 100%;
+  /* padding-left: 15px; */
+  height: 100%;
+}
+.chat-top-panel {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Roboto Mono', monospace;
+  padding-bottom: 5px;
+}
+.chat-top-panel p {
+  color: #ffffff;
+  font-weight: bolder;
+  cursor: pointer;
+}
+.icons {
+  display: flex;
+  gap: 10px;
+  padding-right: 20px;
+}
+.chat-room-icon {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.rooms {
+  display: flex;
+  flex-direction: column;
+}
+.chat-room-icon .magnifier-icon {
+  fill: #ffffff;
+  cursor: pointer;
+}
+.chat-room-icon .tripple-dot-icon {
+  fill: #ffffff;
+  cursor: pointer;
+}
+.chat-room-icon .new-room-icon {
+  fill: #ffffff;
+
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.user-room {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  align-items: center;
+  border-radius: 10px;
+}
+.user-room:hover {
+  cursor: pointer;
+  background-color: rgba(99, 97, 97, 0.274);
+}
+
+.user-room p {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+}

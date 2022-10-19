@@ -1,10 +1,9 @@
 import './App.css';
 import LoginPage from './pages/authentication/LoginPage.jsx';
 import { NotFound } from './pages/NotFound.jsx';
-import { Link, Navigate, Route, Routes, useRoutes } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 import { HomePage } from './pages/home/HomePage';
-import { AuthContext } from './context/AuthenticationContext.js';
-import { useContext } from 'react';
+
 import { ProtectedRoute } from './components/routes/ProtectedRoute.jsx';
 export default function App() {
   let element = useRoutes([

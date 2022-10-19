@@ -2,6 +2,8 @@
 // Imports
 // ========================================================
 
+import { AppError, commonErrors } from '../utils/AppError.js';
+
 // ========================================================
 // Middleware
 // ========================================================
@@ -26,7 +28,7 @@ const validateRequest = (joiSchema, reqProperty) => {
       await joiSchema.validateAsync(req[reqProperty]);
       next();
     } catch (error) {
-      return next(error);
+      return next(new AppError(commonErrors.invalidCredentialsInput));
     }
   };
 };
