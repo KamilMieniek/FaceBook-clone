@@ -2,7 +2,6 @@
 // Imports
 // ========================================================
 
-import mongoose from 'mongoose';
 import { asyncRouteHandler } from '../../Middleware/asyncRouteHandler.middleware.js';
 import { AppError, commonErrors } from '../../utils/AppError.js';
 import User from './users.mongo.js';
@@ -17,10 +16,7 @@ const getUser = asyncRouteHandler(async (req, res, next) => {
   if (!id) {
     return next(new AppError(commonErrors.idRequired));
   }
-  //TODO: move to validation middleware
-  const ObjectId = mongoose.Types.ObjectId;
-  if (!ObjectId.isValid(id))
-    return next(new AppError(commonErrors.badIdFormat));
+
   const user = await User.findOne({ _id: id });
   if (!user) return next(new AppError(commonErrors.invalidUserId));
   res.status(200).json({ username: user.username, birthday: user.birthday });
@@ -33,10 +29,32 @@ const getUsers = asyncRouteHandler(async (req, res, next) => {
 });
 
 //UPDATE
-const updateUser = asyncRouteHandler((req, res, next) => {
-  const params = req.params;
+const updateUser = asyncRouteHandler(async (req, res, next) => {
+  const id = req.params.id;
+  const user = req.user;
+  if (id !== user.id && isAdmin(user) === false)
+    return next(new AppError(commonErrors.unauthorized));
 
-  console.log(params);
+  if (req.body.password) {
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    req.body.password = bcrypt.hashSync(req.body.password, salt);
+  }
+
+  if (req.body.email) {
+    const newEmail = await User.findOne({ email: req.body.email });
+    //if new email exist in database return error
+    if (newEmail) return next(new AppError(commonErrors.emailIsUsed));
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.id,
+    { $set: req.body },
+    { new: true }
+  );
+  if (!updatedUser) {
+    return next(new AppError(commonErrors.unauthorized));
+  }
+  return res.status(200).json(updatedUser);
 });
 
 //DELETE
@@ -48,14 +66,11 @@ const deleteUser = asyncRouteHandler(async (req, res, next) => {
     return next(new AppError(commonErrors.unauthorized));
   }
   const id = req.params.id;
-  const ObjectId = mongoose.Types.ObjectId;
-  if (!ObjectId.isValid(id))
-    return next(new AppError(commonErrors.badIdFormat));
   //this function is mentioned for user to delete only his own account or for admin to delete any account
   //check if id from params match id of user
   if (user.id === id || isAdmin(user)) {
     await User.deleteOne({ _id: id });
-    return res.status(200).json({ status: 'ok' });
+    return res.status(200).json({ description: 'Account deleted' });
   } else {
     return next(new AppError(commonErrors.unauthorized));
   }

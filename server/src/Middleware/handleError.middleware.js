@@ -7,7 +7,7 @@ const handleErrorMiddleware = (err, req, res, next) => {
       if (err.name === 'invalidRefreshToken') {
         res.clearCookie('jwt');
       }
-
+      console.log(err);
       res.status(err.status);
       return res.json({ description: err.description });
     }

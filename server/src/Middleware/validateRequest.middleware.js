@@ -24,10 +24,14 @@ const validateRequest = (joiSchema, reqProperty) => {
   return async (req, res, next) => {
     try {
       //TODO: move data parsing to client from string to date type - timestamps
-      req.body.birthday = new Date(req.body.birthday);
+      if (req.body.birthday) req.body.birthday = new Date(req.body.birthday);
+
       await joiSchema.validateAsync(req[reqProperty]);
+
       next();
     } catch (error) {
+      console.log('validate middleware');
+      console.log(error);
       return next(new AppError(commonErrors.invalidCredentialsInput));
     }
   };
